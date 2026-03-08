@@ -306,5 +306,5 @@ export const salonInfo = {
   instagram: "beautycolor_brovary",
   instagramUrl: "https://www.instagram.com/beautycolor_brovary",
   services: ["Фарбування", "Стрижки", "Кератин", "Ботокс"],
-  workHours: "Пн-Пт: 9:00–19:00 | Сб: 10:00–18:00 | Нд: вихідний",
+  workHours: "Пн-Пт: 9:00–19:00 | Сб-Нд: 10:00–18:00",
 };
