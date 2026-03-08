@@ -296,8 +296,10 @@ export const salonInfo = {
   subtitle: "by Natalia Yasenchuk",
   description: "Ваша краса — наша професія. Ми — автори вашого образу. Ми покажимо, якою красивою ти можеш бути.",
   address: "Ярослава Мудрого 14Б, Бровари",
-  phone: "+380XXXXXXXXX",
+  phone: "+380976088548",
+  phoneFormatted: "+380 97 608 85 48",
   instagram: "beautycolor_brovary",
+  instagramUrl: "https://www.instagram.com/beautycolor_brovary",
   services: ["Фарбування", "Стрижки", "Кератин", "Ботокс"],
   workHours: "Пн-Сб: 9:00 - 20:00 | Нд: вихідний",
 };
