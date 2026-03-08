@@ -8,7 +8,7 @@ const Footer = () => {
         <img src={logo} alt="Beauty Color" className="h-12 w-auto opacity-60" />
         <div className="flex items-center gap-4">
           <a
-            href="https://instagram.com/beautycolor_brovary"
+            href="https://www.instagram.com/beautycolor_brovary"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-gold transition-colors"

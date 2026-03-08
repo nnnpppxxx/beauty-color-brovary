@@ -73,7 +73,7 @@ const ContactsSection = () => {
                   Instagram
                 </h3>
                 <a
-                  href={`https://instagram.com/${salonInfo.instagram}`}
+                  href={salonInfo.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gold font-body text-sm hover:underline"

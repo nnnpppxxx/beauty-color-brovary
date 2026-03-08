@@ -75,7 +75,7 @@ const ShopSection = () => {
         >
           Для замовлення зв'яжіться з нами в{" "}
           <a
-            href="https://instagram.com/beautycolor_brovary"
+            href="https://www.instagram.com/beautycolor_brovary"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gold hover:underline"
