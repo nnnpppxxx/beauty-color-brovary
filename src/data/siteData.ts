@@ -210,12 +210,12 @@ export const masterPrices: MasterPrices[] = [
 
 // --- GALLERY ---
 export const galleryItems: GalleryItem[] = [
-  { id: "1", image: "/images/gallery-1.jpg", caption: "Balayage" },
-  { id: "2", image: "/images/gallery-2.jpg", caption: "Кератинове випрямлення" },
-  { id: "3", image: "/images/gallery-3.jpg", caption: "Стрижка та укладка" },
-  { id: "4", image: "/images/gallery-4.jpg", caption: "Складне фарбування" },
-  { id: "5", image: "/images/gallery-5.jpg", caption: "Air Touch" },
-  { id: "6", image: "/images/gallery-6.jpg", caption: "Реконструкція волосся" },
+  { id: "1", image: "/images/gallery-1.jpg", caption: "До / Після — Вихід з темного" },
+  { id: "2", image: "/images/gallery-2.jpg", caption: "До / Після — Тотал блонд" },
+  { id: "3", image: "/images/gallery-3.jpg", caption: "До / Після — Чистий блонд" },
+  { id: "4", image: "/images/gallery-4.jpg", caption: "До / Після — Холодний блонд" },
+  { id: "5", image: "/images/gallery-5.jpg", caption: "До / Після — Натуральний блонд" },
+  { id: "6", image: "/images/gallery-6.jpg", caption: "До / Після — Air Touch" },
 ];
 
 // --- PRODUCTS ---
