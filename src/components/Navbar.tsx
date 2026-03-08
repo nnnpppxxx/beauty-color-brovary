@@ -25,8 +25,11 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4">
-        <a href="#hero" onClick={() => handleClick("#hero")} className="flex items-center gap-2">
+        <a href="#hero" onClick={() => handleClick("#hero")} className="flex items-center gap-3">
           <img src={logo} alt="Beauty Color" className="h-10 md:h-14 w-auto" />
+          <span className="font-display text-lg md:text-xl tracking-widest text-foreground uppercase">
+            Beauty <span className="text-gold">Color</span>
+          </span>
         </a>
 
         {/* Desktop nav */}
