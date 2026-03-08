@@ -26,7 +26,7 @@ const MastersSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
         >
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="relative overflow-hidden rounded-sm">
               <img
                 src={teamInfo.image}
@@ -34,13 +34,26 @@ const MastersSection = () => {
                 className="w-full h-auto object-cover"
               />
             </div>
-            <div className="space-y-4">
-              <h3 className="font-display text-2xl md:text-3xl text-foreground leading-tight">
+            <div className="space-y-6">
+              <h3 className="font-display text-2xl md:text-3xl lg:text-4xl text-foreground leading-tight">
                 {teamInfo.title}
               </h3>
-              <div className="text-muted-foreground font-body text-sm leading-relaxed whitespace-pre-line">
+              <p className="text-muted-foreground font-body text-sm md:text-base leading-relaxed">
                 {teamInfo.description}
-              </div>
+              </p>
+              <ul className="space-y-3">
+                {teamInfo.highlights.map((item, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gold mt-2 flex-shrink-0" />
+                    <span className="text-foreground/90 font-body text-sm md:text-base">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-gold font-body text-sm md:text-base italic border-l-2 border-gold pl-4">
+                {teamInfo.footer}
+              </p>
             </div>
           </div>
         </motion.div>
