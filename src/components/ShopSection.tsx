@@ -54,7 +54,7 @@ const ShopSection = () => {
                     {product.price} грн
                   </span>
                   <a
-                    href="https://instagram.com/beautycolor_brovary"
+                    href="https://www.instagram.com/beautycolor_brovary"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 border border-border rounded-sm hover:border-gold hover:text-gold transition-colors text-muted-foreground"
@@ -75,7 +75,7 @@ const ShopSection = () => {
         >
           Для замовлення зв'яжіться з нами в{" "}
           <a
-            href="https://instagram.com/beautycolor_brovary"
+            href="https://www.instagram.com/beautycolor_brovary"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gold hover:underline"

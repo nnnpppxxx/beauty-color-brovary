@@ -49,7 +49,7 @@ const ContactsSection = () => {
                   href={`tel:${salonInfo.phone}`}
                   className="text-muted-foreground font-body text-sm hover:text-gold transition-colors"
                 >
-                  {salonInfo.phone}
+                  {salonInfo.phoneFormatted}
                 </a>
               </div>
             </div>
@@ -73,7 +73,7 @@ const ContactsSection = () => {
                   Instagram
                 </h3>
                 <a
-                  href={`https://instagram.com/${salonInfo.instagram}`}
+                  href={salonInfo.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gold font-body text-sm hover:underline"
