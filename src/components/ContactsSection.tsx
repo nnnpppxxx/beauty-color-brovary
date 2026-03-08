@@ -49,7 +49,7 @@ const ContactsSection = () => {
                   href={`tel:${salonInfo.phone}`}
                   className="text-muted-foreground font-body text-sm hover:text-gold transition-colors"
                 >
-                  {salonInfo.phone}
+                  {salonInfo.phoneFormatted}
                 </a>
               </div>
             </div>
