@@ -92,7 +92,7 @@ const ContactsSection = () => {
             transition={{ duration: 0.6 }}
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2537.0!2d30.79!3d50.51!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDMwJzM2LjAiTiAzMMKwNDcnMjQuMCJF!5e0!3m2!1suk!2sua!4v1!5m2!1suk!2sua"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2537.0!2d30.78377!3d50.50221!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4c4e5c99a3c7d%3A0x0!2z0LLRg9C7LiDQr9GA0L7RgdC70LDQstCwINCc0YPQtNGA0L7Qs9C-IDE00JEsINCR0YDQvtCy0LDRgNC4!5e0!3m2!1suk!2sua!4v1!5m2!1suk!2sua"
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: "250px", filter: "invert(90%) hue-rotate(180deg) brightness(0.8) contrast(1.2)" }}

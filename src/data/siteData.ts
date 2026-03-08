@@ -212,6 +212,11 @@ export const galleryItems: GalleryItem[] = [
   { id: "4", image: "/images/gallery-4.jpg", caption: "До / Після — Холодний блонд" },
   { id: "5", image: "/images/gallery-5.jpg", caption: "До / Після — Натуральний блонд" },
   { id: "6", image: "/images/gallery-6.jpg", caption: "До / Після — Air Touch" },
+  { id: "7", image: "/images/gallery-7.jpg", caption: "Бездоганний блонд" },
+  { id: "8", image: "/images/gallery-8.jpg", caption: "Холодний платиновий блонд" },
+  { id: "9", image: "/images/gallery-9.jpg", caption: "Натуральний теплий блонд" },
+  { id: "10", image: "/images/gallery-10.jpg", caption: "Макіяж від Beauty Color" },
+  { id: "11", image: "/images/gallery-11.jpg", caption: "Хімічна завивка — кучері" },
 ];
 
 // --- PRODUCTS ---
