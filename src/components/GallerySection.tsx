@@ -1,12 +1,33 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { galleryItems } from "@/data/siteData";
+import { masterProfiles } from "@/data/masterProfiles";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
+// Aggregate all work photos from master profiles + existing gallery
+const getAllGalleryItems = () => {
+  const masterWorks = masterProfiles.flatMap((master) =>
+    master.workGallery.map((work, idx) => ({
+      id: `${master.id}-work-${idx}`,
+      image: work.image,
+      caption: `${work.caption} — ${master.name}`,
+    }))
+  );
+
+  // Combine: existing gallery + master works (avoid duplicates by image path)
+  const existingImages = new Set(galleryItems.map((g) => g.image));
+  const uniqueMasterWorks = masterWorks.filter(
+    (w) => !existingImages.has(w.image)
+  );
+
+  return [...galleryItems, ...uniqueMasterWorks];
+};
+
 const GallerySection = () => {
   const [selected, setSelected] = useState<string | null>(null);
+  const allItems = getAllGalleryItems();
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "center", slidesToScroll: 1 },
@@ -36,7 +57,7 @@ const GallerySection = () => {
         <div className="relative max-w-6xl mx-auto">
           <div className="overflow-hidden rounded-sm" ref={emblaRef}>
             <div className="flex">
-              {galleryItems.map((item) => (
+              {allItems.map((item) => (
                 <div
                   key={item.id}
                   className="flex-[0_0_80%] sm:flex-[0_0_45%] md:flex-[0_0_33.333%] min-w-0 px-2"
@@ -61,7 +82,6 @@ const GallerySection = () => {
             </div>
           </div>
 
-          {/* Navigation arrows */}
           <button
             onClick={scrollPrev}
             className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center text-foreground hover:text-gold hover:border-gold transition-colors"

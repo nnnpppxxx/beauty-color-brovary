@@ -55,7 +55,7 @@ export const masters: Master[] = [
     name: "Наталія",
     role: "ТОП Майстер / Засновниця",
     description: "Засновниця студії Beauty Color. Спеціалізується на складних техніках фарбування, хімічній завивці та реконструкції волосся. Багаторічний досвід та індивідуальний підхід до кожного клієнта.",
-    image: "/images/master-natalia.jpg",
+    image: "/images/natalia-portrait.jpg",
   },
   {
     id: "katya",
