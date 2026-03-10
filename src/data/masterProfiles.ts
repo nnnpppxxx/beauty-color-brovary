@@ -155,6 +155,10 @@ export const masterProfiles: MasterProfile[] = [
       { image: "/images/natalia-work-2.jpg", caption: "Холодний блонд" },
       { image: "/images/natalia-work-3.jpg", caption: "Натуральний блонд" },
       { image: "/images/natalia-work-4.jpg", caption: "Реконструкція волосся" },
+      { image: "/images/natalia-work-5.jpg", caption: "Теплий блонд" },
+      { image: "/images/natalia-work-6.jpg", caption: "Рівний блонд" },
+      { image: "/images/natalia-work-7.jpg", caption: "Хімічна завивка" },
+      { image: "/images/natalia-work-8.jpg", caption: "Airtouch блонд" },
     ],
   },
 ];
