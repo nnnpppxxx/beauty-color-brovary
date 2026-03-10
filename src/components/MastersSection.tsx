@@ -92,6 +92,14 @@ const MastersSection = () => {
               <p className="text-muted-foreground font-body text-xs md:text-sm leading-relaxed px-1 hidden md:block">
                 {master.description}
               </p>
+              {masterProfiles.some((mp) => mp.id === master.id) && (
+                <Link
+                  to={`/master/${master.id}`}
+                  className="inline-block mt-2 px-1 text-gold font-body text-xs uppercase tracking-wider hover:text-gold-light transition-colors"
+                >
+                  Детальніше →
+                </Link>
+              )}
             </motion.div>
           ))}
         </div>
