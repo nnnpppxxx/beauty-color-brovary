@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { masters, teamInfo } from "@/data/siteData";
+import { masterProfiles } from "@/data/masterProfiles";
 
 const MastersSection = () => {
   return (
