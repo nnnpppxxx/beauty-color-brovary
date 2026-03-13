@@ -161,8 +161,6 @@ export const masterProfiles: MasterProfile[] = [
       { image: "/images/natalia-work-8.jpg", caption: "Airtouch блонд" },
     ],
   },
-];
-
   {
     id: "katya",
     name: "Катерина",
