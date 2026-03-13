@@ -304,8 +304,6 @@ export const masterProfiles: MasterProfile[] = [
       { image: "/images/katya-work-6.jpg", caption: "Smoky eyes" },
     ],
   },
-];
-
   {
     id: "kateryna-n",
     name: "Катерина",
