@@ -304,6 +304,26 @@ export const masterProfiles: MasterProfile[] = [
       { image: "/images/katya-work-6.jpg", caption: "Smoky eyes" },
     ],
   },
+  {
+    id: "kateryna-n",
+    name: "Катерина",
+    fullName: "Катерина Науменко",
+    role: "Колорист / Модифікація волосся",
+    portrait: "/images/kateryna-n-portrait.jpg",
+    bio: [
+      "Привіт! Я Катерина Науменко. Я в роботі вже 8 років, з яких 5 років спеціалізуюся як колорист. Створюю красиві, яскраві та індивідуальні фарбування, які підкреслюють вашу особистість.",
+      "Також я майстер з модифікації волосся — роблю процедури кератину та ботоксу для волосся, щоб воно було здоровим, гладким і доглянутим. Окрім цього, виконую чоловічі та жіночі стрижки, щоб ваш образ був гармонійним від коренів до кінчиків.",
+      "Моя мета – щоб ваше волосся було здоровим, стильним і впевненим у будь-який день.",
+    ],
+    services: [],
+    specialServices: [],
+    workGallery: [
+      { image: "/images/kateryna-n-work-1.jpg", caption: "Балаяж блонд" },
+      { image: "/images/kateryna-n-work-2.jpg", caption: "Об'ємне фарбування" },
+      { image: "/images/kateryna-n-work-3.jpg", caption: "Airtouch" },
+      { image: "/images/kateryna-n-work-4.jpg", caption: "Шатуш карамель" },
+    ],
+  },
 ];
 
 export const getMasterProfile = (id: string) =>
