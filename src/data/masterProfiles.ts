@@ -284,8 +284,25 @@ export const masterProfiles: MasterProfile[] = [
         ],
       },
     ],
-    specialServices: [],
-    workGallery: [],
+    specialServices: [
+      {
+        title: "Лікувальна стрижка",
+        description: [
+          "Тривалість — 1 година",
+          "Індивідуальний підхід до стану волосся",
+          "Відновлення структури та здорового вигляду",
+        ],
+        price: "500",
+      },
+    ],
+    workGallery: [
+      { image: "/images/katya-work-1.jpg", caption: "Вечірній макіяж" },
+      { image: "/images/katya-work-2.jpg", caption: "Ніжний макіяж" },
+      { image: "/images/katya-work-3.jpg", caption: "Рожевий макіяж" },
+      { image: "/images/katya-work-4.jpg", caption: "Натуральний образ" },
+      { image: "/images/katya-work-5.jpg", caption: "Креативний макіяж" },
+      { image: "/images/katya-work-6.jpg", caption: "Smoky eyes" },
+    ],
   },
 ];
 
