@@ -120,9 +120,10 @@
 }
 
 /* Smooth scroll & touch */
-html {
+html, body {
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
 }
 
 button, a, [role="button"] {
