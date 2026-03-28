@@ -77,7 +77,7 @@ const Navbar = () => {
                 <button
                   key={item.href}
                   onClick={() => handleClick(item.href)}
-                  className="text-base font-body tracking-wide text-muted-foreground hover:text-gold transition-colors uppercase"
+                  className="text-base font-body tracking-wide text-muted-foreground hover:text-gold active:text-gold transition-colors uppercase touch-manipulation py-2 px-4 min-h-[44px] flex items-center justify-center"
                 >
                   {item.label}
                 </button>
