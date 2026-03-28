@@ -56,10 +56,10 @@ const Navbar = () => {
         {/* Mobile burger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden text-foreground p-2"
+          className="lg:hidden text-foreground p-3 -mr-2 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Menu"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
