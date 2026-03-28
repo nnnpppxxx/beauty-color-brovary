@@ -119,7 +119,13 @@
   background: hsl(var(--gold));
 }
 
-/* Smooth scroll */
+/* Smooth scroll & touch */
 html {
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, a, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }

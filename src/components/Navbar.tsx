@@ -23,9 +23,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border touch-manipulation">
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4">
-        <a href="#hero" onClick={() => handleClick("#hero")} className="flex items-center gap-3">
+        <a href="#hero" onClick={(e) => { e.preventDefault(); handleClick("#hero"); }} className="flex items-center gap-3 touch-manipulation">
           <img src={logo} alt="Beauty Color" className="h-10 md:h-14 w-auto" />
           <span className="font-display text-lg md:text-xl tracking-wider text-foreground">
             Beauty <span className="text-gold">Color</span>
@@ -56,10 +56,10 @@ const Navbar = () => {
         {/* Mobile burger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden text-foreground p-2"
+          className="lg:hidden text-foreground p-3 -mr-2 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Menu"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
@@ -77,7 +77,7 @@ const Navbar = () => {
                 <button
                   key={item.href}
                   onClick={() => handleClick(item.href)}
-                  className="text-base font-body tracking-wide text-muted-foreground hover:text-gold transition-colors uppercase"
+                  className="text-base font-body tracking-wide text-muted-foreground hover:text-gold active:text-gold transition-colors uppercase touch-manipulation py-2 px-4 min-h-[44px] flex items-center justify-center"
                 >
                   {item.label}
                 </button>
