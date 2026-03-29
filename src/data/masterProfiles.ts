@@ -416,7 +416,14 @@ export const masterProfiles: MasterProfile[] = [
     ],
     services: [],
     specialServices: [],
-    workGallery: [],
+    workGallery: [
+      { image: "/images/maria-work-1.jpg", caption: "Робота з клієнткою" },
+      { image: "/images/maria-work-2.jpg", caption: "Чистий блонд каре" },
+      { image: "/images/maria-work-3.jpg", caption: "Мідний балаяж" },
+      { image: "/images/maria-work-4.jpg", caption: "Укладка феном" },
+      { image: "/images/maria-work-5.jpg", caption: "Теплий натуральний блонд" },
+      { image: "/images/maria-work-6.jpg", caption: "Гладке відновлення" },
+    ],
   },
 ];
 
