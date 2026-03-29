@@ -396,7 +396,7 @@ export const salonInfo = {
   description: "Ваша краса — наша професія. Ми — автори вашого образу. Ми покажимо, якою красивою ти можеш бути.",
   address: "Ярослава Мудрого 14Б, Бровари",
   phone: "+380682455683",
-  phoneFormatted: "0 (68) 245 56 83",
+  phoneFormatted: "+380 (68) 245 56 83",
   instagram: "beautycolor_brovary",
   instagramUrl: "https://www.instagram.com/beautycolor_brovary",
   services: ["Фарбування", "Стрижки", "Кератин", "Ботокс"],

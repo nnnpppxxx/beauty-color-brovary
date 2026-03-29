@@ -3,12 +3,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Clock, Check } from "lucide-react";
 import { getMasterProfile } from "@/data/masterProfiles";
 import { salonInfo } from "@/data/siteData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const MasterPage = () => {
   const { id } = useParams<{ id: string }>();
   const master = getMasterProfile(id || "");
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   if (!master) {
     return (
