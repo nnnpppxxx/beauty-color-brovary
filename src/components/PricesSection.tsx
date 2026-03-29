@@ -90,9 +90,28 @@ const PricesSection = () => {
             transition={{ duration: 0.3 }}
             className="max-w-2xl mx-auto space-y-6"
           >
-            <p className="text-muted-foreground font-body text-xs text-center">
-              *ціни на послуги залежать від густоти та стану вашого волосся
-            </p>
+            {current.categories.length === 0 ? (
+              <div className="text-center py-12 border border-border rounded-sm">
+                <p className="text-foreground font-body text-base mb-3">
+                  Прайс-лист формується
+                </p>
+                <p className="text-muted-foreground font-body text-sm mb-5">
+                  За актуальним прайсом звертайтесь в Instagram
+                </p>
+                <a
+                  href="https://www.instagram.com/beautycolor_brovary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 border border-gold text-gold hover:bg-gold/10 transition-all font-body text-sm uppercase tracking-wider"
+                >
+                  @beautycolor_brovary
+                </a>
+              </div>
+            ) : (
+              <>
+                <p className="text-muted-foreground font-body text-xs text-center">
+                  *ціни на послуги залежать від густоти та стану вашого волосся
+                </p>
             {current.categories.map((cat, catIdx) => (
               <motion.div
                 key={catIdx}
@@ -125,6 +144,8 @@ const PricesSection = () => {
                 </div>
               </motion.div>
             ))}
+              </>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

@@ -26,7 +26,7 @@ const MasterPage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link
             to="/"
@@ -116,101 +116,124 @@ const MasterPage = () => {
               Прайс-<span className="text-gold italic">лист</span>
             </h2>
             <div className="w-12 h-px bg-gold mx-auto" />
-            <p className="text-muted-foreground font-body text-xs mt-4 max-w-md mx-auto">
-              *ціни на послуги залежать від густоти та стану вашого волосся
-            </p>
+            {master.services.length > 0 && (
+              <p className="text-muted-foreground font-body text-xs mt-4 max-w-md mx-auto">
+                *ціни на послуги залежать від густоти та стану вашого волосся
+              </p>
+            )}
           </motion.div>
 
-          <div className="max-w-2xl mx-auto space-y-6">
-            {master.services.map((cat, catIdx) => (
-              <motion.div
-                key={catIdx}
-                className="border border-border rounded-sm p-5 md:p-6"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: catIdx * 0.05, duration: 0.4 }}
+          {master.services.length === 0 ? (
+            <div className="text-center py-12 border border-border rounded-sm max-w-lg mx-auto">
+              <p className="text-foreground font-body text-base mb-3">
+                Прайс-лист формується
+              </p>
+              <p className="text-muted-foreground font-body text-sm mb-5">
+                За актуальним прайсом звертайтесь в Instagram
+              </p>
+              <a
+                href={salonInfo.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 border border-gold text-gold hover:bg-gold/10 transition-all font-body text-sm uppercase tracking-wider"
               >
-                <h3 className="font-display text-lg md:text-xl text-gold italic mb-5">
-                  {cat.title}
-                </h3>
-                <div className="space-y-3">
-                  {cat.items.map((item, itemIdx) => (
-                    <div key={itemIdx} className="flex items-end justify-between gap-2">
-                      <span className="font-body text-sm text-foreground/80 flex-1">
-                        {item.service}
-                      </span>
-                      {item.duration && (
-                        <span className="flex items-center gap-1 text-muted-foreground font-body text-xs mr-3 whitespace-nowrap">
-                          <Clock className="w-3 h-3" />
-                          {item.duration}
+                @{salonInfo.instagram}
+              </a>
+            </div>
+          ) : (
+            <div className="max-w-2xl mx-auto space-y-6">
+              {master.services.map((cat, catIdx) => (
+                <motion.div
+                  key={catIdx}
+                  className="border border-border rounded-sm p-5 md:p-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: catIdx * 0.05, duration: 0.4 }}
+                >
+                  <h3 className="font-display text-lg md:text-xl text-gold italic mb-5">
+                    {cat.title}
+                  </h3>
+                  <div className="space-y-3">
+                    {cat.items.map((item, itemIdx) => (
+                      <div key={itemIdx} className="flex items-end justify-between gap-2">
+                        <span className="font-body text-sm text-foreground/80 flex-1">
+                          {item.service}
                         </span>
-                      )}
-                      <span className="font-body text-sm text-gold font-medium whitespace-nowrap">
-                        {item.price} грн
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                        {item.duration && (
+                          <span className="flex items-center gap-1 text-muted-foreground font-body text-xs mr-3 whitespace-nowrap">
+                            <Clock className="w-3 h-3" />
+                            {item.duration}
+                          </span>
+                        )}
+                        <span className="font-body text-sm text-gold font-medium whitespace-nowrap">
+                          {item.price} грн
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Special Services */}
-      <section className="py-16 md:py-24 gradient-dark">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="text-center mb-14"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-3">
-              Додаткові <span className="text-gold italic">послуги</span>
-            </h2>
-            <div className="w-12 h-px bg-gold mx-auto" />
-          </motion.div>
+      {master.specialServices.length > 0 && (
+        <section className="py-16 md:py-24 gradient-dark">
+          <div className="container mx-auto px-4">
+            <motion.div
+              className="text-center mb-14"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-3">
+                Додаткові <span className="text-gold italic">послуги</span>
+              </h2>
+              <div className="w-12 h-px bg-gold mx-auto" />
+            </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {master.specialServices.map((service, idx) => (
-              <motion.div
-                key={idx}
-                className="border border-border rounded-sm p-6 md:p-8 bg-card/50 flex flex-col"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-              >
-                <h3 className="font-display text-xl md:text-2xl text-foreground mb-5">
-                  {service.title}
-                </h3>
-                <ul className="space-y-2.5 flex-1">
-                  {service.description.map((item, dIdx) => (
-                    <li key={dIdx} className="flex items-start gap-2.5">
-                      <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-muted-foreground font-body text-sm leading-relaxed">
-                        {item}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                {service.includes && (
-                  <p className="text-muted-foreground font-body text-xs mt-4 border-t border-border pt-3">
-                    У вартість включені: {service.includes}
-                  </p>
-                )}
-                <div className="mt-5 pt-4 border-t border-border">
-                  <span className="font-display text-2xl md:text-3xl text-gold">
-                    {service.price} грн
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {master.specialServices.map((service, idx) => (
+                <motion.div
+                  key={idx}
+                  className="border border-border rounded-sm p-6 md:p-8 bg-card/50 flex flex-col"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                >
+                  <h3 className="font-display text-xl md:text-2xl text-foreground mb-5">
+                    {service.title}
+                  </h3>
+                  <ul className="space-y-2.5 flex-1">
+                    {service.description.map((item, dIdx) => (
+                      <li key={dIdx} className="flex items-start gap-2.5">
+                        <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-muted-foreground font-body text-sm leading-relaxed">
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  {service.includes && (
+                    <p className="text-muted-foreground font-body text-xs mt-4 border-t border-border pt-3">
+                      У вартість включені: {service.includes}
+                    </p>
+                  )}
+                  <div className="mt-5 pt-4 border-t border-border">
+                    <span className="font-display text-2xl md:text-3xl text-gold">
+                      {service.price} грн
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Work Gallery */}
       <section className="py-16 md:py-24 bg-card">
