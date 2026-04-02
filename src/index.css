@@ -47,6 +47,7 @@
 
     --shadow-gold: 0 4px 30px hsl(42 65% 55% / 0.15);
     --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4);
+    --safe-area-top: env(safe-area-inset-top, 0px);
 
     --sidebar-background: 0 0% 8%;
     --sidebar-foreground: 0 0% 92%;
@@ -67,10 +68,24 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    min-height: 100dvh;
+    background-color: hsl(var(--background));
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--safe-area-top);
+    background: hsl(var(--background));
+    pointer-events: none;
+    z-index: 45;
   }
 }
 
@@ -124,9 +139,27 @@ html, body {
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
+  background-color: hsl(var(--background));
 }
 
 button, a, [role="button"] {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+}
+
+.site-navbar {
+  background: hsl(var(--background));
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  backdrop-filter: saturate(160%) blur(14px);
+  padding-top: var(--safe-area-top);
+}
+
+@supports (padding: max(0px)) {
+  .site-navbar {
+    padding-top: max(env(safe-area-inset-top, 0px), 0px);
+  }
+
+  body::before {
+    height: max(env(safe-area-inset-top, 0px), 0px);
+  }
 }
