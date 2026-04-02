@@ -1,3 +1,5 @@
+import teamStyled from "@/assets/team-styled.png";
+
 // ============================================
 // CMS-READY DATA LAYER
 // All content is centralized here for easy Strapi/CMS integration.
@@ -82,7 +84,7 @@ export const masters: Master[] = [
 
 // --- TEAM INFO ---
 export const teamInfo = {
-  image: "/images/team.jpg",
+  image: teamStyled,
   title: "Чотири майстри. Чотири характери. Одна сильна команда.",
   description: `Нас об'єднує любов до колористики та найвищі стандарти роботи.
 

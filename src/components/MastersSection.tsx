@@ -29,11 +29,12 @@ const MastersSection = () => {
           transition={{ duration: 0.7 }}
         >
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="relative overflow-hidden rounded-sm bg-gradient-to-b from-card via-background to-card p-4 md:p-6">
+            <div className="relative overflow-hidden rounded-[1.75rem] border border-border/60 bg-gradient-to-br from-secondary via-card to-background p-4 md:p-6 shadow-card">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/60" />
               <img
                 src={teamInfo.image}
                 alt="Команда Beauty Color"
-                className="w-full h-auto object-cover rounded-sm"
+                className="relative z-10 w-full h-auto object-cover rounded-[1.25rem]"
               />
             </div>
             <div className="space-y-6">
