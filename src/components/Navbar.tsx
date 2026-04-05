@@ -8,7 +8,7 @@ const navItems = [
   { label: "Майстри", href: "#masters" },
   { label: "Прайс", href: "#prices" },
   { label: "Галерея", href: "#gallery" },
-  { label: "Магазин", href: "#shop" },
+  
   { label: "Відгуки", href: "#reviews" },
   { label: "Контакти", href: "#contacts" },
 ];

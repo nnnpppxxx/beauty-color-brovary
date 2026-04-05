@@ -14,6 +14,21 @@ const MasterPage = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
+  // Dynamic SEO meta tags
+  useEffect(() => {
+    if (master) {
+      const title = `${master.name} — Майстер салону Beauty Color у Броварах`;
+      const desc = `${master.name} — ${master.role} у салоні Beauty Color, м. Бровари. ${master.bio.slice(0, 120)}`;
+      document.title = title;
+      document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
+      document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+      document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc);
+    }
+    return () => {
+      document.title = 'Beauty Color — Салон краси у Броварах | Фарбування, стрижки, кератин';
+    };
+  }, [master]);
+
   if (!master) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
