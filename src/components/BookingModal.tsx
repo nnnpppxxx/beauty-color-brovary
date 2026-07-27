@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sparkles, Calendar, User, Phone, MessageSquare, Scissors } from "lucide-react";
+import { X, Sparkles, Calendar, Clock, User, Phone, MessageSquare, Scissors } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { masters } from "@/data/siteData";
+
 
 const services = [
   "Стрижка",
