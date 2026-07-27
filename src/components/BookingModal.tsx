@@ -83,38 +83,39 @@ const BookingModal = ({ open, onClose }: Props) => {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center sm:p-4 bg-black/80 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto bg-card border border-gold/30 rounded-sm shadow-gold"
-            initial={{ scale: 0.95, y: 20, opacity: 0 }}
-            animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.95, y: 20, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            className="relative w-full sm:max-w-lg max-h-[95dvh] overflow-y-auto overscroll-contain bg-card border border-gold/30 rounded-t-2xl sm:rounded-sm shadow-gold pb-[env(safe-area-inset-bottom)]"
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 text-muted-foreground hover:text-gold transition-colors z-10"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-muted-foreground hover:text-gold transition-colors z-10 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Закрити"
             >
-              <X size={22} />
+              <X size={24} />
             </button>
 
-            <div className="p-6 md:p-10">
-              <div className="text-center mb-8">
-                <p className="text-xs uppercase tracking-[0.3em] text-gold mb-3">Reservation</p>
-                <h2 className="font-display text-3xl md:text-4xl text-foreground">
+            <div className="px-5 py-6 sm:p-10">
+              <div className="text-center mb-6 sm:mb-8">
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold mb-2 sm:mb-3">Reservation</p>
+                <h2 className="font-display text-2xl sm:text-4xl text-foreground">
                   Ваш <span className="text-gold italic">Ідеальний Час</span>
                 </h2>
-                <div className="w-12 h-px bg-gold mx-auto mt-4" />
+                <div className="w-12 h-px bg-gold mx-auto mt-3 sm:mt-4" />
               </div>
 
-              <form onSubmit={submit} className="space-y-5">
+              <form onSubmit={submit} className="space-y-4 sm:space-y-5">
+
                 <Field icon={<Sparkles size={14} />} label="Оберіть послугу">
                   <select
                     value={form.service}
