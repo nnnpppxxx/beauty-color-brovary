@@ -33,11 +33,27 @@ const BookingModal = ({ open, onClose }: Props) => {
     phone: "",
     service: services[0],
     master: "",
-    datetime: "",
+    date: "",
+    time: "",
     comment: "",
   });
 
   const update = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
+
+  const todayStr = useMemo(() => {
+    const d = new Date();
+    const tz = d.getTimezoneOffset() * 60000;
+    return new Date(d.getTime() - tz).toISOString().slice(0, 10);
+  }, []);
+
+  const timeSlots = useMemo(() => {
+    const slots: string[] = [];
+    for (let h = 9; h <= 20; h++) {
+      slots.push(`${String(h).padStart(2, "0")}:00`);
+      if (h < 20) slots.push(`${String(h).padStart(2, "0")}:30`);
+    }
+    return slots;
+  }, []);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,10 +62,13 @@ const BookingModal = ({ open, onClose }: Props) => {
 
     setLoading(true);
     try {
-      const { error } = await supabase.functions.invoke("send-booking", { body: form });
+      const datetime = form.date && form.time ? `${form.date} ${form.time}` : "";
+      const { error } = await supabase.functions.invoke("send-booking", {
+        body: { ...form, datetime },
+      });
       if (error) throw error;
       toast.success("Заявку відправлено! Ми зв'яжемось з вами найближчим часом.");
-      setForm({ name: "", phone: "", service: services[0], master: "", datetime: "", comment: "" });
+      setForm({ name: "", phone: "", service: services[0], master: "", date: "", time: "", comment: "" });
       onClose();
     } catch (err) {
       console.error(err);
@@ -58,6 +77,7 @@ const BookingModal = ({ open, onClose }: Props) => {
       setLoading(false);
     }
   };
+
 
   return (
     <AnimatePresence>
