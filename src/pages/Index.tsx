@@ -3,10 +3,10 @@ import HeroSection from "@/components/HeroSection";
 import MastersSection from "@/components/MastersSection";
 import PricesSection from "@/components/PricesSection";
 import GallerySection from "@/components/GallerySection";
-
 import ReviewsSection from "@/components/ReviewsSection";
 import ContactsSection from "@/components/ContactsSection";
 import Footer from "@/components/Footer";
+import BookingFab from "@/components/BookingFab";
 
 const Index = () => {
   return (
@@ -16,10 +16,10 @@ const Index = () => {
       <MastersSection />
       <PricesSection />
       <GallerySection />
-      
       <ReviewsSection />
       <ContactsSection />
       <Footer />
+      <BookingFab />
     </div>
   );
 };
