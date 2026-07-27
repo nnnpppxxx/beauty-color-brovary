@@ -159,10 +159,12 @@ button, a, [role="button"] {
   background: hsl(var(--background));
   border: 1px solid hsl(var(--border));
   border-radius: 2px;
-  padding: 12px 14px;
+  padding: 14px 14px;
   color: hsl(var(--foreground));
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1.2;
+  min-height: 48px;
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
 }
@@ -173,6 +175,20 @@ button, a, [role="button"] {
 .input-field::placeholder {
   color: hsl(var(--muted-foreground));
 }
+/* Gold-tint the native date/time picker icon on dark theme */
+.input-field[type="date"],
+.input-field[type="time"],
+.input-field[type="datetime-local"] {
+  color-scheme: dark;
+}
+.input-field[type="date"]::-webkit-calendar-picker-indicator,
+.input-field[type="time"]::-webkit-calendar-picker-indicator,
+.input-field[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(72%) sepia(58%) saturate(452%) hue-rotate(2deg) brightness(94%) contrast(87%);
+  cursor: pointer;
+  opacity: 0.9;
+}
+
 
 @supports (padding: max(0px)) {
   .site-navbar {
