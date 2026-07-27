@@ -142,14 +142,30 @@ const BookingModal = ({ open, onClose }: Props) => {
                   </select>
                 </Field>
 
-                <Field icon={<Calendar size={14} />} label="Бажана дата та час">
-                  <input
-                    type="datetime-local"
-                    value={form.datetime}
-                    onChange={(e) => update("datetime", e.target.value)}
-                    className="input-field"
-                  />
-                </Field>
+                <div className="grid grid-cols-2 gap-3 sm:gap-5">
+                  <Field icon={<Calendar size={14} />} label="Дата">
+                    <input
+                      type="date"
+                      value={form.date}
+                      min={todayStr}
+                      onChange={(e) => update("date", e.target.value)}
+                      className="input-field appearance-none"
+                    />
+                  </Field>
+                  <Field icon={<Clock size={14} />} label="Час">
+                    <select
+                      value={form.time}
+                      onChange={(e) => update("time", e.target.value)}
+                      className="input-field appearance-none"
+                    >
+                      <option value="" className="bg-card">Оберіть час</option>
+                      {timeSlots.map((t) => (
+                        <option key={t} value={t} className="bg-card">{t}</option>
+                      ))}
+                    </select>
+                  </Field>
+                </div>
+
 
                 <div className="grid md:grid-cols-2 gap-5">
                   <Field icon={<User size={14} />} label="Ваше ім'я">
