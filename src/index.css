@@ -154,6 +154,26 @@ button, a, [role="button"] {
   padding-top: var(--safe-area-top);
 }
 
+.input-field {
+  width: 100%;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: 2px;
+  padding: 12px 14px;
+  color: hsl(var(--foreground));
+  font-family: var(--font-body);
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.input-field:focus {
+  border-color: hsl(var(--gold));
+  box-shadow: 0 0 0 3px hsl(var(--gold) / 0.15);
+}
+.input-field::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
 @supports (padding: max(0px)) {
   .site-navbar {
     padding-top: max(env(safe-area-inset-top, 0px), 0px);
