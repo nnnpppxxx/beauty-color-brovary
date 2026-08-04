@@ -181,9 +181,7 @@ const BookingModal = ({ open, onClose }: Props) => {
                     </select>
                     {form.date && (
                       <p className="mt-1.5 text-[10px] text-muted-foreground font-body">
-                        {[0, 6].includes(new Date(...(form.date.split("-").map(Number) as [number, number, number])).getDay())
-                          ? ""
-                          : ""}
+                        {timeSlots[0]} – {timeSlots[timeSlots.length - 1]}
                       </p>
                     )}
                   </Field>
