@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, Calendar, Clock, User, Phone, MessageSquare, Scissors } from "lucide-react";
 import { toast } from "sonner";
@@ -47,13 +47,25 @@ const BookingModal = ({ open, onClose }: Props) => {
   }, []);
 
   const timeSlots = useMemo(() => {
+    if (!form.date) return [];
+    const [y, m, d] = form.date.split("-").map(Number);
+    const day = new Date(y, m - 1, d).getDay(); // 0 = нд, 6 = сб
+    const isWeekend = day === 0 || day === 6;
+    const start = isWeekend ? 10 : 9;
+    const end = isWeekend ? 18 : 19; // останній слот
     const slots: string[] = [];
-    for (let h = 9; h <= 20; h++) {
+    for (let h = start; h <= end; h++) {
       slots.push(`${String(h).padStart(2, "0")}:00`);
-      if (h < 20) slots.push(`${String(h).padStart(2, "0")}:30`);
+      if (h < end) slots.push(`${String(h).padStart(2, "0")}:30`);
     }
     return slots;
-  }, []);
+  }, [form.date]);
+
+  useEffect(() => {
+    if (form.time && !timeSlots.includes(form.time)) {
+      setForm((f) => ({ ...f, time: "" }));
+    }
+  }, [timeSlots, form.time]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,13 +169,21 @@ const BookingModal = ({ open, onClose }: Props) => {
                     <select
                       value={form.time}
                       onChange={(e) => update("time", e.target.value)}
-                      className="input-field appearance-none"
+                      disabled={!form.date}
+                      className="input-field appearance-none disabled:opacity-50"
                     >
-                      <option value="" className="bg-card">Оберіть час</option>
+                      <option value="" className="bg-card">
+                        {form.date ? "Оберіть час" : "Спочатку дата"}
+                      </option>
                       {timeSlots.map((t) => (
                         <option key={t} value={t} className="bg-card">{t}</option>
                       ))}
                     </select>
+                    {form.date && (
+                      <p className="mt-1.5 text-[10px] text-muted-foreground font-body">
+                        {timeSlots[0]} – {timeSlots[timeSlots.length - 1]}
+                      </p>
+                    )}
                   </Field>
                 </div>
 
