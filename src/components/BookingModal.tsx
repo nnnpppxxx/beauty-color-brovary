@@ -169,13 +169,23 @@ const BookingModal = ({ open, onClose }: Props) => {
                     <select
                       value={form.time}
                       onChange={(e) => update("time", e.target.value)}
-                      className="input-field appearance-none"
+                      disabled={!form.date}
+                      className="input-field appearance-none disabled:opacity-50"
                     >
-                      <option value="" className="bg-card">Оберіть час</option>
+                      <option value="" className="bg-card">
+                        {form.date ? "Оберіть час" : "Спочатку дата"}
+                      </option>
                       {timeSlots.map((t) => (
                         <option key={t} value={t} className="bg-card">{t}</option>
                       ))}
                     </select>
+                    {form.date && (
+                      <p className="mt-1.5 text-[10px] text-muted-foreground font-body">
+                        {[0, 6].includes(new Date(...(form.date.split("-").map(Number) as [number, number, number])).getDay())
+                          ? ""
+                          : ""}
+                      </p>
+                    )}
                   </Field>
                 </div>
 
