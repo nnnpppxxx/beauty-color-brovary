@@ -13,13 +13,22 @@ const buildPriceTabs = () => {
     categories: { title: string; items: { service: string; price: string; duration?: string }[] }[];
   }[] = [];
 
-  // Add masters with full profiles
+  // Add masters with full profiles (fallback to siteData prices if profile has none)
   masterProfiles.forEach((mp) => {
+    const fallback = masterPrices.find((p) => p.masterId === mp.id);
+    const categories =
+      mp.services && mp.services.length > 0
+        ? mp.services
+        : (fallback?.categories.map((c) => ({
+            title: c.title,
+            items: c.items.map((i) => ({ service: i.service, price: i.price })),
+          })) ?? []);
+
     tabs.push({
       id: mp.id,
       name: mp.name,
       role: mp.role,
-      categories: mp.services,
+      categories,
     });
   });
 
