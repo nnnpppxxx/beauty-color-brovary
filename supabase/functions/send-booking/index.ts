@@ -48,29 +48,37 @@ Deno.serve(async (req) => {
     const { data: subs, error } = await supabase
       .from("telegram_subscribers")
       .select("chat_id");
-    if (error) throw error;
+    if (error) console.error("db error", JSON.stringify(error));
 
     const chatIds = (subs ?? []).map((r) => r.chat_id as number);
 
+    let delivered = 0;
     await Promise.all(
-      chatIds.map((chat_id) =>
-        fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ chat_id, text, parse_mode: "HTML" }),
-        }).catch((e) => console.error("send fail", chat_id, e))
-      )
+      chatIds.map(async (chat_id) => {
+        try {
+          const r = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id, text, parse_mode: "HTML" }),
+          });
+          const j = await r.json();
+          if (j.ok) delivered++;
+          else console.error("telegram error", chat_id, JSON.stringify(j));
+        } catch (e) {
+          console.error("send fail", chat_id, String(e));
+        }
+      })
     );
 
-    return new Response(JSON.stringify({ ok: true, delivered: chatIds.length }), {
+    return new Response(JSON.stringify({ ok: true, delivered, subscribers: chatIds.length }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
-    console.error("send-booking error", e);
-    return new Response(JSON.stringify({ error: String(e) }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    console.error("send-booking error", e instanceof Error ? e.message : JSON.stringify(e));
+    return new Response(
+      JSON.stringify({ error: e instanceof Error ? e.message : JSON.stringify(e) }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
   }
 });
 
