@@ -1,17 +1,17 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { z } from "https://esm.sh/zod@3.23.8";
+import { createClient } from "npm:@supabase/supabase-js@2";
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { z } from "npm:zod@3.23.8";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+/**
+ * Permanent recipients. These Telegram chat IDs receive every booking even if the
+ * database is empty, reset or unavailable. Add admin IDs here (the bot replies
+ * with the ID when an admin presses /start).
+ */
+const ADMIN_CHAT_IDS: number[] = [];
 
-const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN")!;
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
 const Body = z.object({
   name: z.string().trim().min(2).max(80),
@@ -22,17 +22,83 @@ const Body = z.object({
   comment: z.string().trim().max(500).optional().default(""),
 });
 
+const json = (data: unknown, status = 200) =>
+  new Response(JSON.stringify(data), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+
+function envChatIds(): number[] {
+  return (Deno.env.get("TELEGRAM_CHAT_IDS") ?? "")
+    .split(/[,\s]+/)
+    .map((s) => Number(s.trim()))
+    .filter((n) => Number.isFinite(n) && n !== 0);
+}
+
+/** Database subscribers are optional: any failure or slowness is ignored. */
+async function dbChatIds(): Promise<number[]> {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return [];
+  try {
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    const query = supabase.from("telegram_subscribers").select("chat_id");
+    const timeout = new Promise<{ data: null; error: Error }>((resolve) =>
+      setTimeout(() => resolve({ data: null, error: new Error("db timeout") }), 4000)
+    );
+    const { data, error } = await Promise.race([query, timeout]);
+    if (error) {
+      console.error("db unavailable, using permanent recipients only:", error.message ?? String(error));
+      return [];
+    }
+    return (data ?? []).map((r: { chat_id: number }) => Number(r.chat_id));
+  } catch (e) {
+    console.error("db exception:", e instanceof Error ? e.message : String(e));
+    return [];
+  }
+}
+
+async function sendTelegram(chat_id: number, text: string): Promise<boolean> {
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 8000);
+      const r = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id, text, parse_mode: "HTML" }),
+        signal: ctrl.signal,
+      });
+      clearTimeout(t);
+      const j = await r.json();
+      if (j.ok) return true;
+      console.error("telegram error", chat_id, JSON.stringify(j));
+      // 403 = user blocked the bot, 400 = chat not found: retrying won't help
+      if (j.error_code === 403 || j.error_code === 400) return false;
+    } catch (e) {
+      console.error("send fail", chat_id, attempt, e instanceof Error ? e.message : String(e));
+    }
+    await new Promise((res) => setTimeout(res, 500 * attempt));
+  }
+  return false;
+}
+
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const json = await req.json();
-    const parsed = Body.safeParse(json);
+    if (!TELEGRAM_BOT_TOKEN) {
+      console.error("TELEGRAM_BOT_TOKEN missing");
+      return json({ ok: false, error: "bot_not_configured" }, 503);
+    }
+
+    let raw: unknown;
+    try {
+      raw = await req.json();
+    } catch {
+      return json({ ok: false, error: "invalid_json" }, 400);
+    }
+    const parsed = Body.safeParse(raw);
     if (!parsed.success) {
-      return new Response(JSON.stringify({ error: "Invalid input", details: parsed.error.flatten() }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return json({ ok: false, error: "invalid_input", details: parsed.error.flatten().fieldErrors }, 400);
     }
     const b = parsed.data;
 
@@ -45,40 +111,22 @@ Deno.serve(async (req) => {
       (b.datetime ? `🗓 <b>Бажаний час:</b> ${escapeHtml(b.datetime)}\n` : "") +
       (b.comment ? `\n💬 ${escapeHtml(b.comment)}` : "");
 
-    const { data: subs, error } = await supabase
-      .from("telegram_subscribers")
-      .select("chat_id");
-    if (error) console.error("db error", JSON.stringify(error));
-
-    const chatIds = (subs ?? []).map((r) => r.chat_id as number);
-
-    let delivered = 0;
-    await Promise.all(
-      chatIds.map(async (chat_id) => {
-        try {
-          const r = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ chat_id, text, parse_mode: "HTML" }),
-          });
-          const j = await r.json();
-          if (j.ok) delivered++;
-          else console.error("telegram error", chat_id, JSON.stringify(j));
-        } catch (e) {
-          console.error("send fail", chat_id, String(e));
-        }
-      })
+    const recipients = Array.from(
+      new Set([...ADMIN_CHAT_IDS, ...envChatIds(), ...(await dbChatIds())])
     );
 
-    return new Response(JSON.stringify({ ok: true, delivered, subscribers: chatIds.length }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    const results = await Promise.all(recipients.map((id) => sendTelegram(id, text)));
+    const delivered = results.filter(Boolean).length;
+
+    console.log("booking processed", JSON.stringify({ recipients: recipients.length, delivered }));
+
+    if (delivered === 0) {
+      return json({ ok: false, error: "not_delivered", recipients: recipients.length }, 502);
+    }
+    return json({ ok: true, delivered, recipients: recipients.length });
   } catch (e) {
-    console.error("send-booking error", e instanceof Error ? e.message : JSON.stringify(e));
-    return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : JSON.stringify(e) }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-    );
+    console.error("send-booking error", e instanceof Error ? e.message : String(e));
+    return json({ ok: false, error: "server_error" }, 500);
   }
 });
 
