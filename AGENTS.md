@@ -1,0 +1,1 @@
+- Booking notifications: send-booking delivers to hardcoded ADMIN_CHAT_IDS plus optional DB subscribers, and the form shows phone/Instagram fallback on failure — the database was once wiped and bookings silently stopped.
