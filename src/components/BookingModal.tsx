@@ -262,9 +262,35 @@ const BookingModal = ({ open, onClose }: Props) => {
                   {loading ? "Відправка..." : "Підтвердити запис"}
                 </button>
 
-                <p className="text-center text-xs text-muted-foreground font-body">
-                  Заявка миттєво надійде нашим адміністраторам
-                </p>
+                {failed ? (
+                  <div className="border border-gold/30 rounded-sm p-4 space-y-3 text-center">
+                    <p className="text-sm text-foreground font-body">
+                      Зараз не вдалося надіслати заявку онлайн. Зв'яжіться з нами напряму — ми запишемо вас одразу.
+                    </p>
+                    <a
+                      href={`tel:${salonInfo.phone}`}
+                      className="flex items-center justify-center gap-2 w-full py-3 border border-gold text-gold font-body text-xs uppercase tracking-[0.2em] rounded-sm hover:bg-gold/10 transition-colors min-h-[44px]"
+                    >
+                      <Phone size={14} /> {salonInfo.phoneFormatted}
+                    </a>
+                    <a
+                      href={salonInfo.instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={copyFallback}
+                      className="flex items-center justify-center gap-2 w-full py-3 border border-border text-foreground font-body text-xs uppercase tracking-[0.2em] rounded-sm hover:border-gold transition-colors min-h-[44px]"
+                    >
+                      Написати в Instagram
+                    </a>
+                    <p className="text-[11px] text-muted-foreground font-body">
+                      Дані заявки буде скопійовано — просто вставте їх у повідомлення.
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-center text-xs text-muted-foreground font-body">
+                    Заявка миттєво надійде нашим адміністраторам
+                  </p>
+                )}
               </form>
             </div>
           </motion.div>
