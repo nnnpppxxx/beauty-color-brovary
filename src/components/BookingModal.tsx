@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, Calendar, Clock, User, Phone, MessageSquare, Scissors } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { masters } from "@/data/siteData";
+import { masters, salonInfo } from "@/data/siteData";
 
 
 const services = [
@@ -28,6 +28,7 @@ interface Props {
 
 const BookingModal = ({ open, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -67,26 +68,58 @@ const BookingModal = ({ open, onClose }: Props) => {
     }
   }, [timeSlots, form.time]);
 
+  const sendOnce = async (payload: Record<string, string>) => {
+    const { data, error } = await supabase.functions.invoke("send-booking", { body: payload });
+    if (error) throw error;
+    if (!data?.ok) throw new Error(data?.error ?? "not_delivered");
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.name.trim().length < 2) return toast.error("Введіть ім'я");
     if (form.phone.trim().length < 6) return toast.error("Введіть номер телефону");
 
     setLoading(true);
+    setFailed(false);
+    const datetime = form.date && form.time ? `${form.date} ${form.time}` : "";
+    const payload = { ...form, datetime };
+    let lastErr: unknown = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        await sendOnce(payload);
+        toast.success("Заявку відправлено! Ми зв'яжемось з вами найближчим часом.");
+        setForm({ name: "", phone: "", service: services[0], master: "", date: "", time: "", comment: "" });
+        setLoading(false);
+        onClose();
+        return;
+      } catch (err) {
+        lastErr = err;
+        await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
+      }
+    }
+    console.error(lastErr);
+    setLoading(false);
+    setFailed(true);
+  };
+
+  const fallbackText = [
+    "Запис Beauty Color",
+    `Ім'я: ${form.name}`,
+    `Телефон: ${form.phone}`,
+    `Послуга: ${form.service}`,
+    form.master && `Майстер: ${form.master}`,
+    form.date && `Дата: ${form.date} ${form.time}`,
+    form.comment && `Коментар: ${form.comment}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const copyFallback = async () => {
     try {
-      const datetime = form.date && form.time ? `${form.date} ${form.time}` : "";
-      const { error } = await supabase.functions.invoke("send-booking", {
-        body: { ...form, datetime },
-      });
-      if (error) throw error;
-      toast.success("Заявку відправлено! Ми зв'яжемось з вами найближчим часом.");
-      setForm({ name: "", phone: "", service: services[0], master: "", date: "", time: "", comment: "" });
-      onClose();
-    } catch (err) {
-      console.error(err);
-      toast.error("Не вдалося відправити. Спробуйте ще раз або зателефонуйте нам.");
-    } finally {
-      setLoading(false);
+      await navigator.clipboard.writeText(fallbackText);
+      toast.success("Дані заявки скопійовано");
+    } catch {
+      /* ignore */
     }
   };
 
