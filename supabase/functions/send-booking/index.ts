@@ -7,7 +7,10 @@ import { z } from "npm:zod@3.23.8";
  * database is empty, reset or unavailable. Add admin IDs here (the bot replies
  * with the ID when an admin presses /start).
  */
-const ADMIN_CHAT_IDS: number[] = [];
+const ADMIN_CHAT_IDS: number[] = [
+  1563046408, // @nnnpppxxx
+  527651544, // @b_y_studio
+];
 
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
