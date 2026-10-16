@@ -1,1 +1,2 @@
 - Booking notifications: send-booking delivers to hardcoded ADMIN_CHAT_IDS plus optional DB subscribers, and the form shows phone/Instagram fallback on failure — the database was once wiped and bookings silently stopped.
+- Booking form tries the self-hosted relay `server/booking-server.mjs` (POST /api/booking via nginx) first, then the cloud function — so delivery survives a cloud backend outage. Keep ADMIN_CHAT_IDS identical in both.

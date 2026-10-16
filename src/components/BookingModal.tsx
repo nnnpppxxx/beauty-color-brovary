@@ -68,10 +68,39 @@ const BookingModal = ({ open, onClose }: Props) => {
     }
   }, [timeSlots, form.time]);
 
-  const sendOnce = async (payload: Record<string, string>) => {
+  // Route 1: relay on the site's own server (independent of the cloud backend).
+  const sendViaOwnServer = async (payload: Record<string, string>) => {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 10000);
+    try {
+      const res = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: ctrl.signal,
+      });
+      if (!res.ok) throw new Error(`own_server_${res.status}`);
+      const data = await res.json();
+      if (!data?.ok) throw new Error(data?.error ?? "not_delivered");
+    } finally {
+      clearTimeout(t);
+    }
+  };
+
+  // Route 2: cloud function.
+  const sendViaCloud = async (payload: Record<string, string>) => {
     const { data, error } = await supabase.functions.invoke("send-booking", { body: payload });
     if (error) throw error;
     if (!data?.ok) throw new Error(data?.error ?? "not_delivered");
+  };
+
+  const sendOnce = async (payload: Record<string, string>) => {
+    try {
+      await sendViaOwnServer(payload);
+    } catch (e) {
+      console.warn("own server relay failed, using cloud:", e);
+      await sendViaCloud(payload);
+    }
   };
 
   const submit = async (e: React.FormEvent) => {
